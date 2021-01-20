@@ -1,6 +1,7 @@
 # jedis-poc
 
-Simple Redis java test with [Jedis client](https://github.com/redis/jedis) and docker-compose
+Simple Redis java test with [Jedis client](https://github.com/redis/jedis) and docker-compose.
+Junit tests with [embedded-redis](https://github.com/kstyrc/embedded-redis).
 
 ## Build
 

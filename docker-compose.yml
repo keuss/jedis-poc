@@ -1,0 +1,14 @@
+version: "3"
+services:
+  myapp:
+    build: .
+    container_name: myapp_container
+    restart: always
+    depends_on:
+      - myredis
+  myredis:
+    image: redis:6.0
+    container_name: redis_container
+    restart: always
+    ports:
+      - 6379:6379

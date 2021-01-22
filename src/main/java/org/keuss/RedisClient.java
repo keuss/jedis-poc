@@ -3,6 +3,7 @@ package org.keuss;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,11 +28,26 @@ public class RedisClient {
     private RedisClient(String ip, int port) {
         try {
             if (jedisPool == null) {
-                jedisPool = new JedisPool(new URI("http://" + ip + ":" + port));
+                jedisPool = new JedisPool(this.buildPoolConfig(), new URI("http://" + ip + ":" + port));
             }
         } catch (URISyntaxException e) {
             log.error("Malformed server address", e);
         }
+    }
+
+    private JedisPoolConfig buildPoolConfig() {
+        final JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxTotal(128);
+        jedisPoolConfig.setMaxIdle(128);
+        jedisPoolConfig.setMinIdle(16);
+        jedisPoolConfig.setTestOnBorrow(true);
+        jedisPoolConfig.setTestOnReturn(true);
+        jedisPoolConfig.setTestWhileIdle(true);
+        jedisPoolConfig.setMinEvictableIdleTimeMillis(60000);
+        jedisPoolConfig.setTimeBetweenEvictionRunsMillis(30000);
+        jedisPoolConfig.setNumTestsPerEvictionRun(3);
+        jedisPoolConfig.setBlockWhenExhausted(true);
+        return jedisPoolConfig;
     }
 
     public String set(final String key, final String value) {

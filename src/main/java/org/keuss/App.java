@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 public class App {
@@ -24,10 +25,13 @@ public class App {
         Map<String, String> props = new HashMap<>();
         props.put("name", "keuss");
         props.put("job", "coder");
-        redisClient.hmset("user#1", props);
+        redisClient.hmset("users/user#1/profile", props);
+        redisClient.sadd("users/user#1/roles", "role1", "role2");
 
-        Map<String, String> fields = redisClient.hgetAll("user#1");
+        Map<String, String> fields = redisClient.hgetAll("users/user#1/profile");
         log.info("fields {}", fields);
+        Set<String> readKeys = redisClient.keys("users/user#1/*");
+        log.info("readKeys {}", readKeys);
 
         long wait = Long.parseLong(args[0]);
         log.info("Sleeping for : {} ms ...", wait);

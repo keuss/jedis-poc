@@ -78,6 +78,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <mainClass>org.keuss.App</mainClass>
+                             <!-- see MANIFEST.MF in jedis-poc.jar for classpath -->
                             <classpathPrefix>lib/</classpathPrefix>
                         </manifest>
                     </archive>
